@@ -46,6 +46,13 @@ A Chrome extension for P2P merchants with a profit calculator and quick chat tem
 5. Select this folder (the one containing `manifest.json`)
 6. The extension is now installed and active!
 
+### Package as ZIP
+
+```bash
+./scripts/build-zip.sh
+# outputs dist/p2p-merchant-copilot-vX.Y.Z.zip
+```
+
 ### Method 2: From Chrome Web Store (Coming Soon)
 
 Once published, you can install directly from the Chrome Web Store.
