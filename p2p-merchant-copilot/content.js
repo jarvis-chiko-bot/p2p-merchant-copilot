@@ -6,6 +6,9 @@
   let currentTemplates = [];
   let defaultFee = 1;
 
+  // Track last focused editable element so clicking the widget doesn't steal focus
+  let lastFocusedEditable = null;
+
   const defaultTemplates = [
     { id: 1, text: "Hi! I can help you with this trade. What's your preferred payment method?" },
     { id: 2, text: "Thanks for your order! Please send the payment and I'll release the crypto right away." },
@@ -23,6 +26,7 @@
       setupCalculator();
       setupTemplates();
       setupToast();
+      setupFocusTracking();
     });
   }
 
@@ -285,25 +289,174 @@
     });
   }
 
-  function pasteIntoFocusedInput(text) {
-    const activeElement = document.activeElement;
-    
-    if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable)) {
-      if (activeElement.isContentEditable) {
-        document.execCommand('insertText', false, text);
-      } else {
-        const start = activeElement.selectionStart || 0;
-        const end = activeElement.selectionEnd || 0;
-        const value = activeElement.value;
-        activeElement.value = value.substring(0, start) + text + value.substring(end);
-        activeElement.selectionStart = activeElement.selectionEnd = start + text.length;
+  function setupFocusTracking() {
+    // Capture focus changes to remember the last editable element
+    document.addEventListener('focusin', (e) => {
+      const el = e.target;
+      if (!el) return;
+      // Ignore focus inside our widget
+      if (widget && widget.contains(el)) return;
+      if (isEditable(el)) {
+        lastFocusedEditable = el;
       }
-      activeElement.dispatchEvent(new Event('input', { bubbles: true }));
-      showToast('Pasted into input!');
-    } else {
-      copyToClipboard(text);
-      showToast('No input focused. Copied instead!');
+    }, true);
+  }
+
+  function isEditable(el) {
+    if (!el) return false;
+    if (el.isContentEditable) return true;
+    const tag = (el.tagName || '').toUpperCase();
+    if (tag === 'TEXTAREA') return !el.disabled && !el.readOnly;
+    if (tag === 'INPUT') {
+      const type = (el.getAttribute('type') || 'text').toLowerCase();
+      const disallowed = ['button', 'submit', 'checkbox', 'radio', 'file', 'range', 'color', 'hidden'];
+      if (disallowed.includes(type)) return false;
+      return !el.disabled && !el.readOnly;
     }
+    // Some sites use ARIA textbox on a div
+    if (el.getAttribute && el.getAttribute('role') === 'textbox') return true;
+    return false;
+  }
+
+  function isVisible(el) {
+    if (!el) return false;
+    const rect = el.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return false;
+    const style = window.getComputedStyle(el);
+    return style.visibility !== 'hidden' && style.display !== 'none' && style.opacity !== '0';
+  }
+
+  function isBinance() {
+    return /(^|\.)binance\.com$/i.test(window.location.hostname);
+  }
+
+  function findBinanceChatInput() {
+    // Heuristic scan: prefer visible textareas/contenteditable elements that look like a chat box
+    const candidates = [];
+    const all = Array.from(document.querySelectorAll('textarea, input, [contenteditable="true"], [role="textbox"]'));
+
+    for (const el of all) {
+      if (!isEditable(el)) continue;
+      if (!isVisible(el)) continue;
+
+      let score = 0;
+      const placeholder = (el.getAttribute('placeholder') || '').toLowerCase();
+      const ariaLabel = (el.getAttribute('aria-label') || '').toLowerCase();
+      const name = (el.getAttribute('name') || '').toLowerCase();
+      const id = (el.id || '').toLowerCase();
+      const cls = (el.className || '').toString().toLowerCase();
+
+      const attrBlob = `${placeholder} ${ariaLabel} ${name} ${id} ${cls}`;
+      const parentBlob = (el.closest('[class],[id]') ? ((el.closest('[class],[id]').className || '') + ' ' + (el.closest('[class],[id]').id || '')).toLowerCase() : '');
+
+      // Strong signals
+      if (/(chat|message|messaging|inbox|conversation)/.test(attrBlob)) score += 6;
+      if (/(type|write|send)\s+(a\s+)?(message|msg)/.test(attrBlob)) score += 6;
+      if (/(mensaje|escrib)/.test(attrBlob)) score += 5;
+
+      // Parent/container signals
+      if (/(chat|message|conversation|order)/.test(parentBlob)) score += 3;
+
+      // Prefer multi-line inputs
+      const tag = (el.tagName || '').toUpperCase();
+      if (tag === 'TEXTAREA') score += 2;
+      if (el.isContentEditable) score += 2;
+
+      // Penalize search boxes
+      if (/(search|buscar)/.test(attrBlob)) score -= 10;
+
+      // Binance P2P pages often have a single prominent textbox; require positive score
+      if (score > 0) {
+        candidates.push({ el, score });
+      }
+    }
+
+    candidates.sort((a, b) => b.score - a.score);
+    return candidates.length ? candidates[0].el : null;
+  }
+
+  function insertTextInto(el, text) {
+    if (!el) return false;
+
+    try {
+      el.focus({ preventScroll: true });
+    } catch {
+      try { el.focus(); } catch {}
+    }
+
+    if (el.isContentEditable) {
+      try {
+        document.execCommand('insertText', false, text);
+      } catch {
+        // Fallback: append
+        el.textContent = (el.textContent || '') + text;
+      }
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      return true;
+    }
+
+    const tag = (el.tagName || '').toUpperCase();
+    if (tag === 'INPUT' || tag === 'TEXTAREA') {
+      // Prefer setRangeText to preserve selection
+      if (typeof el.setRangeText === 'function') {
+        const start = el.selectionStart ?? el.value.length;
+        const end = el.selectionEnd ?? el.value.length;
+        el.setRangeText(text, start, end, 'end');
+      } else {
+        const start = el.selectionStart || 0;
+        const end = el.selectionEnd || 0;
+        const value = el.value || '';
+        el.value = value.substring(0, start) + text + value.substring(end);
+        el.selectionStart = el.selectionEnd = start + text.length;
+      }
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    }
+
+    // ARIA textbox div fallback
+    if (el.getAttribute && el.getAttribute('role') === 'textbox') {
+      try {
+        document.execCommand('insertText', false, text);
+      } catch {
+        el.textContent = (el.textContent || '') + text;
+      }
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      return true;
+    }
+
+    return false;
+  }
+
+  function resolvePasteTarget() {
+    const active = document.activeElement;
+    if (active && ! (widget && widget.contains(active)) && isEditable(active)) return active;
+
+    if (lastFocusedEditable && document.contains(lastFocusedEditable) && isEditable(lastFocusedEditable)) {
+      return lastFocusedEditable;
+    }
+
+    if (isBinance()) {
+      const binanceInput = findBinanceChatInput();
+      if (binanceInput) return binanceInput;
+    }
+
+    return null;
+  }
+
+  function pasteIntoFocusedInput(text) {
+    const target = resolvePasteTarget();
+
+    if (target) {
+      const ok = insertTextInto(target, text);
+      if (ok) {
+        showToast(isBinance() ? 'Pasted into Binance chat!' : 'Pasted into input!');
+        return;
+      }
+    }
+
+    copyToClipboard(text);
+    showToast('No input found. Copied instead!');
   }
 
   function setupToast() {
