@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const defaultTemplates = [
-    { id: 1, text: "Hi! I can help you with this trade. What's your preferred payment method?" },
-    { id: 2, text: "Thanks for your order! Please send the payment and I'll release the crypto right away." },
-    { id: 3, text: "I've received your payment. Releasing the crypto now, please confirm once received." },
-    { id: 4, text: "Hello! I'm online and ready to trade. Do you have any questions?" },
-    { id: 5, text: "Thank you for trading with me! Please leave a positive review if everything went well." }
+    { id: 1, text: "Hola! ¿Me confirmás si el pago es por {banco}? Apenas lo vea reflejado, libero el USDT." },
+    { id: 2, text: "Perfecto. Porfa realizá el pago y enviame el comprobante. En cuanto lo confirme, libero." },
+    { id: 3, text: "Pago recibido. Estoy liberando el USDT ahora. Avisame si ya te aparece." },
+    { id: 4, text: "Si tu banco te pone retención, avisame y te doy {minutos} minutos extra." },
+    { id: 5, text: "Gracias por la compra. Si todo salió bien, ¿me dejás un review de 5 estrellas?" }
   ];
 
   let currentTemplates = [];

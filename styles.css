@@ -196,6 +196,37 @@
   color: var(--error);
 }
 
+.p2p-copilot-vars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.p2p-copilot-vars-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-right: 4px;
+}
+
+.p2p-copilot-chip {
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.p2p-copilot-chip:hover {
+  border-color: var(--accent-primary);
+}
+
 .p2p-copilot-templates-list {
   display: flex;
   flex-direction: column;

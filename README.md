@@ -104,12 +104,10 @@ Once published, you can install directly from the Chrome Web Store.
 ## Customization
 
 ### Default Templates
-The extension comes with 5 pre-written templates:
-1. Greeting with payment method inquiry
-2. Payment request with release promise
-3. Payment confirmation with release
-4. Online availability check
-5. Review request
+The extension comes with 5 pre-written templates (CRC/SINPE-friendly) and supports quick placeholders:
+- `{monto}` `{banco}` `{minutos}` `{ref}`
+
+You can insert placeholders quickly from the widget (Templates tab → Vars) and customize everything in the Options page.
 
 Edit these in the Options page to match your communication style.
 
