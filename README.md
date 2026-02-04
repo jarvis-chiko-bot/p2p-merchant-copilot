@@ -43,7 +43,7 @@ A Chrome extension for P2P merchants with a profit calculator and quick chat tem
 2. Open Chrome and navigate to `chrome://extensions/`
 3. Enable **Developer mode** (toggle in top right)
 4. Click **Load unpacked**
-5. Select the `p2p-merchant-copilot` folder
+5. Select this folder (the one containing `manifest.json`)
 6. The extension is now installed and active!
 
 ### Method 2: From Chrome Web Store (Coming Soon)
@@ -77,21 +77,21 @@ Once published, you can install directly from the Chrome Web Store.
 ## File Structure
 
 ```
-p2p-merchant-copilot/
+.
 ├── manifest.json        # Extension manifest (MV3)
 ├── background.js        # Service worker
-├── content.js          # Content script (widget injection)
-├── styles.css          # Widget styles
-├── popup.html          # Extension popup
-├── popup.js            # Popup script
-├── options.html        # Settings page
-├── options.js          # Options script
-├── options.css         # Options styles
-├── icons/              # Extension icons
+├── content.js           # Content script (widget injection)
+├── styles.css           # Widget styles
+├── popup.html           # Extension popup
+├── popup.js             # Popup script
+├── options.html         # Settings page
+├── options.js           # Options script
+├── options.css          # Options styles
+├── icons/               # Extension icons
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
-└── README.md           # This file
+└── README.md            # This file
 ```
 
 ## Permissions
