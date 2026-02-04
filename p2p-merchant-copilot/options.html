@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2P Merchant Copilot - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>P2P Merchant Copilot Settings</h1>
+      <p>Customize your templates and default fee percentage</p>
+    </header>
+    
+    <main>
+      <section class="settings-section">
+        <h2>Default Fee Percentage</h2>
+        <div class="form-group">
+          <label for="default-fee">Default Fee (%)</label>
+          <input type="number" id="default-fee" step="0.01" min="0" max="100" placeholder="1.0">
+          <span class="help-text">This will be pre-filled in the profit calculator</span>
+        </div>
+      </section>
+      
+      <section class="settings-section">
+        <h2>Chat Templates</h2>
+        <p class="section-description">Edit your quick message templates. You can use Ctrl+Shift+1-5 to paste directly into any input field.</p>
+        
+        <div id="templates-container" class="templates-container">
+          <!-- Templates will be populated here -->
+        </div>
+      </section>
+    </main>
+    
+    <footer>
+      <button id="save-btn" class="btn-primary">Save Changes</button>
+      <button id="reset-btn" class="btn-secondary">Reset to Defaults</button>
+      <span id="status-message" class="status-message"></span>
+    </footer>
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-hover: #e8e8e8;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --accent-primary: #4f46e5;
+  --accent-hover: #4338ca;
+  --success: #10b981;
+  --error: #ef4444;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --radius: 8px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-hover: #3d3d3d;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --border-color: #404040;
+    --accent-primary: #6366f1;
+    --accent-hover: #818cf8;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.p2p-copilot-widget {
+  all: initial;
+  font-family: var(--font);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  background: var(--bg-primary);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px var(--shadow);
+  z-index: 2147483647;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: opacity 0.3s ease;
+}
+
+.p2p-copilot-widget.minimized {
+  width: auto;
+  min-width: 140px;
+}
+
+.p2p-copilot-header {
+  background: var(--bg-secondary);
+  padding: 12px 16px;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+.p2p-copilot-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.p2p-copilot-header h3::before {
+  content: '📊';
+  font-size: 16px;
+}
+
+.p2p-copilot-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.p2p-copilot-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p2p-copilot-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.p2p-copilot-body {
+  padding: 16px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.p2p-copilot-widget.minimized .p2p-copilot-body {
+  display: none;
+}
+
+.p2p-copilot-section {
+  margin-bottom: 20px;
+}
+
+.p2p-copilot-section:last-child {
+  margin-bottom: 0;
+}
+
+.p2p-copilot-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.p2p-copilot-form-group {
+  margin-bottom: 12px;
+}
+
+.p2p-copilot-form-group label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.p2p-copilot-form-group input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  box-sizing: border-box;
+  font-family: var(--font);
+}
+
+.p2p-copilot-form-group input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.p2p-copilot-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.p2p-copilot-results {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.p2p-copilot-result-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.p2p-copilot-result-item:last-child {
+  border-bottom: none;
+}
+
+.p2p-copilot-result-label {
+  color: var(--text-secondary);
+}
+
+.p2p-copilot-result-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.p2p-copilot-result-value.positive {
+  color: var(--success);
+}
+
+.p2p-copilot-result-value.negative {
+  color: var(--error);
+}
+
+.p2p-copilot-templates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.p2p-copilot-template-item {
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.p2p-copilot-template-text {
+  font-size: 13px;
+  color: var(--text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.p2p-copilot-template-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.p2p-copilot-btn-small {
+  background: var(--accent-primary);
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.p2p-copilot-btn-small:hover {
+  background: var(--accent-hover);
+}
+
+.p2p-copilot-btn-small.secondary {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.p2p-copilot-btn-small.secondary:hover {
+  background: var(--border-color);
+}
+
+.p2p-copilot-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--success);
+  color: white;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  box-shadow: 0 4px 12px var(--shadow);
+  z-index: 2147483648;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.p2p-copilot-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.p2p-copilot-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.p2p-copilot-tab {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-family: var(--font);
+}
+
+.p2p-copilot-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.p2p-copilot-tab.active {
+  color: var(--accent-primary);
+  background: var(--bg-secondary);
+  font-weight: 500;
+}
+
+.p2p-copilot-tab-content {
+  display: none;
+}
+
+.p2p-copilot-tab-content.active {
+  display: block;
+}
+
+.p2p-copilot-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: se-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.p2p-copilot-resize-handle::after {
+  content: '◢';
+}
+
+.p2p-copilot-widget.minimized .p2p-copilot-resize-handle {
+  display: none;
+}
