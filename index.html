@@ -176,6 +176,13 @@
     .highlight-box{background:var(--card);border-left:4px solid var(--accent);padding:20px;border-radius:0 12px 12px 0;margin:20px 0}
     .highlight-box p{margin:0;color:var(--muted)}
 
+    /* Reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .btn,.feature{transition:none}
+      .btn:hover,.feature:hover{transform:none}
+    }
+    
     /* Mobile adjustments */
     @media (max-width:480px){
       .wrap{padding:20px 16px 60px}
@@ -186,6 +193,7 @@
       .cta-section{padding:40px 24px}
       .code-block{font-size:12px;padding:12px}
       .comparison-box{padding:16px}
+      .step{padding-left:0;padding-top:60px}
     }
     
     /* Prevent horizontal scroll */
