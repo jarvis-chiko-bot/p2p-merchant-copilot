@@ -121,6 +121,11 @@ Edit these in the Options page to match your communication style.
 ### Default Fee
 Set your platform's default fee percentage (e.g., 1%) in the Options page. This will be pre-filled in the calculator.
 
+## References
+
+- Binance C2C Quick Start (summary): `docs/binance-c2c-quick-start.md`
+- Official doc: https://developers.binance.com/docs/c2c/quick-start
+
 ## Troubleshooting
 
 ### Widget not appearing?
