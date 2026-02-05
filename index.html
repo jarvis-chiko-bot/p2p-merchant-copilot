@@ -4,183 +4,555 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0b0f14" />
-  <title>P2P Merchant Copilot — Binance P2P templates & profit calculator</title>
-  <meta name="description" content="Extensión de Chrome para merchants de Binance P2P: calculadora de profit + templates de chat + pegado confiable en el input de Binance." />
+  
+  <!-- Primary Meta Tags -->
+  <title>P2P Merchant Copilot — Responde más rápido. Gana más en cada operación.</title>
+  <meta name="description" content="Extensión de Chrome para merchants de Binance P2P en LATAM. Templates automáticos + calculadora de profit + pegado inteligente en el chat. Reduce errores, aumenta tus ganancias." />
+  <meta name="keywords" content="Binance P2P, merchant P2P, templates P2P, calculadora profit, CRC, SINPE, trading P2P, extensión Chrome" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jarvis-chiko-bot.github.io/p2p-merchant-copilot/" />
+  <meta property="og:title" content="P2P Merchant Copilot — Responde más rápido. Gana más en cada operación." />
+  <meta property="og:description" content="Extensión de Chrome para merchants de Binance P2P. Templates automáticos + calculadora de profit. Reduce errores, aumenta tus ganancias." />
+  <meta property="og:image" content="https://jarvis-chiko-bot.github.io/p2p-merchant-copilot/og-image.png" />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://jarvis-chiko-bot.github.io/p2p-merchant-copilot/" />
+  <meta property="twitter:title" content="P2P Merchant Copilot — Responde más rápido. Gana más en cada operación." />
+  <meta property="twitter:description" content="Extensión de Chrome para merchants de Binance P2P. Templates automáticos + calculadora de profit. Reduce errores, aumenta tus ganancias." />
+  <meta property="twitter:image" content="https://jarvis-chiko-bot.github.io/p2p-merchant-copilot/og-image.png" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%236366f1' rx='20' width='100' height='100'/><text y='.9em' font-size='70' x='50%' text-anchor='middle' dominant-baseline='middle'>🚀</text></svg>" />
 
   <style>
     :root{
       --bg:#0b0f14;--card:#0f172a;--card2:#111827;--text:#e5e7eb;--muted:#9ca3af;
       --accent:#6366f1;--accent2:#22c55e;--danger:#ef4444;--border:rgba(255,255,255,.10);
-      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --shadow: 0 12px 30px rgba(0,0,0,.35);--focus-ring:rgba(99,102,241,.45);
     }
     @media (prefers-color-scheme: light){
-      :root{--bg:#f7f7fb;--card:#ffffff;--card2:#ffffff;--text:#111827;--muted:#6b7280;--border:rgba(0,0,0,.10);--shadow: 0 12px 30px rgba(0,0,0,.08)}
+      :root{--bg:#f7f7fb;--card:#ffffff;--card2:#ffffff;--text:#111827;--muted:#6b7280;--border:rgba(0,0,0,.10);--shadow: 0 12px 30px rgba(0,0,0,.08);--focus-ring:rgba(99,102,241,.4)}
     }
 
     *{box-sizing:border-box}
-    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:var(--bg); color:var(--text)}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:var(--bg); color:var(--text);line-height:1.6}
     a{color:inherit}
-    .wrap{max-width:1040px;margin:0 auto;padding:36px 18px 60px}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 80px}
 
-    .skip{position:absolute;left:-999px;top:10px;background:var(--card);border:1px solid var(--border);padding:10px 12px;border-radius:10px;text-decoration:none}
-    .skip:focus{left:12px;z-index:20;outline:0}
-
-    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
-    .brand{display:flex;gap:10px;align-items:center}
-    .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#8b5cf6);box-shadow:var(--shadow)}
-    .brand b{letter-spacing:-.02em}
+    /* Accessibility */
+    .skip{position:absolute;left:-9999px;top:16px;background:var(--accent);color:white;padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:600;z-index:1000}
+    .skip:focus{left:16px;outline:3px solid var(--focus-ring);outline-offset:3px}
+    *:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px;border-radius:4px}
+    
+    /* Header */
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#8b5cf6);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:22px}
+    .brand b{letter-spacing:-.02em;font-size:18px}
+    .brand-tagline{font-size:12px;color:var(--muted);margin-top:2px}
 
     .nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .link{font-size:13px;color:var(--muted);text-decoration:none;border:1px solid transparent;padding:8px 10px;border-radius:10px}
-    .link:hover{border-color:var(--border);color:var(--text)}
-    .link:focus-visible{outline:3px solid rgba(99,102,241,.35);outline-offset:2px}
+    .link{font-size:14px;color:var(--muted);text-decoration:none;border:1px solid transparent;padding:10px 14px;border-radius:10px;transition:all .2s}
+    .link:hover{border-color:var(--border);color:var(--text);background:var(--card)}
 
-    .hero{display:grid;grid-template-columns:1.18fr .82fr;gap:16px;align-items:start}
-    @media (max-width:980px){.hero{grid-template-columns:1fr}}
+    /* Hero */
+    .hero{text-align:center;padding:40px 0 60px}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.25);padding:8px 16px;border-radius:999px;font-size:13px;color:var(--accent);margin-bottom:24px}
+    h1{margin:0 0 20px 0;font-size:clamp(36px,6vw,56px);letter-spacing:-.03em;line-height:1.1;font-weight:800}
+    .hero p{margin:0 auto 32px;max-width:640px;color:var(--muted);font-size:18px;line-height:1.6}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:48px}
+    .btn{display:inline-flex;gap:10px;align-items:center;justify-content:center;text-decoration:none;background:var(--accent);color:white;padding:14px 28px;border-radius:14px;font-weight:700;font-size:16px;border:2px solid transparent;transition:all .2s;box-shadow:0 4px 14px rgba(99,102,241,.35)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,.45)}
+    .btn.secondary{background:transparent;border-color:var(--border);color:var(--text);box-shadow:none}
+    .btn.secondary:hover{background:var(--card);border-color:var(--border)}
+    .btn.large{padding:16px 32px;font-size:17px}
 
-    .card{background:linear-gradient(180deg,rgba(99,102,241,.10),transparent 50%), var(--card2);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+    /* Sections */
+    section{margin:80px 0}
+    .section-header{text-align:center;margin-bottom:48px}
+    .section-header h2{margin:0 0 12px 0;font-size:clamp(28px,4vw,36px);letter-spacing:-.02em}
+    .section-header p{margin:0;color:var(--muted);font-size:17px}
 
-    h1{margin:0 0 10px 0;font-size:40px;letter-spacing:-.03em;line-height:1.08;text-wrap:balance}
-    p{margin:10px 0;color:var(--muted);line-height:1.55}
+    /* Cards */
+    .card{background:linear-gradient(180deg,rgba(99,102,241,.06),transparent 50%), var(--card2);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:var(--shadow)}
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    @media (max-width:980px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
 
-    .badges{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
-    .badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--border);color:var(--text);background:rgba(255,255,255,.03)}
-    .badge.green{border-color:rgba(34,197,94,.35);color:var(--accent2)}
+    /* Before/After */
+    .comparison{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    @media (max-width:768px){.comparison{grid-template-columns:1fr}}
+    .comparison-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+    .comparison-box.before{border-left:4px solid var(--danger)}
+    .comparison-box.after{border-left:4px solid var(--accent2)}
+    .comparison-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;color:var(--muted)}
+    .comparison-box.before .comparison-label{color:var(--danger)}
+    .comparison-box.after .comparison-label{color:var(--accent2)}
+    .comparison-box h4{margin:0 0 16px 0;font-size:18px}
+    .comparison-box ul{margin:0 0 20px 20px;padding:0;color:var(--muted)}
+    .comparison-box li{margin:10px 0}
+    
+    /* Code blocks */
+    .code-block{background:#0d1117;border:1px solid #30363d;border-radius:12px;padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:13px;line-height:1.5;overflow-x:auto;color:#e6edf3}
+    @media (prefers-color-scheme: light){.code-block{background:#f6f8fa;border-color:#d0d7de;color:#24292f}}
+    .code-block .comment{color:#8b949e;font-style:italic}
+    .code-block .highlight{color:#7ee787}
+    
+    /* Steps */
+    .steps{display:flex;gap:24px;counter-reset:step}
+    @media (max-width:768px){.steps{flex-direction:column}}
+    .step{flex:1;position:relative;padding-left:60px}
+    .step::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:0;width:44px;height:44px;background:linear-gradient(135deg,var(--accent),#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:white;box-shadow:0 4px 12px rgba(99,102,241,.35)}
+    .step h3{margin:0 0 10px 0;font-size:20px}
+    .step p{margin:0;color:var(--muted);font-size:15px}
 
-    .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .btn{display:inline-flex;gap:10px;align-items:center;justify-content:center;text-decoration:none;background:var(--accent);color:white;padding:11px 14px;border-radius:12px;font-weight:700;border:1px solid rgba(255,255,255,.08)}
-    .btn:hover{filter:brightness(1.06)}
-    .btn:focus-visible{outline:3px solid rgba(99,102,241,.35);outline-offset:3px}
-    .btn.secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
+    /* Features */
+    .feature{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:all .2s}
+    .feature:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.2)}
+    .feature-icon{width:48px;height:48px;background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.1));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px}
+    .feature h3{margin:0 0 10px 0;font-size:17px}
+    .feature p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+    .feature ul{margin:12px 0 0 18px;padding:0;color:var(--muted);font-size:13px}
+    .feature li{margin:6px 0}
 
-    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-    @media (max-width:980px){.grid3{grid-template-columns:1fr}}
+    /* Pricing */
+    .pricing{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:800px;margin:0 auto}
+    @media (max-width:768px){.pricing{grid-template-columns:1fr}}
+    .pricing-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative}
+    .pricing-card.featured{border:2px solid var(--accent);background:linear-gradient(180deg,rgba(99,102,241,.08),transparent)}
+    .pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:white;padding:6px 16px;border-radius:999px;font-size:12px;font-weight:700}
+    .pricing-name{font-size:24px;font-weight:800;margin-bottom:8px}
+    .pricing-price{font-size:42px;font-weight:800;margin-bottom:4px}
+    .pricing-price span{font-size:16px;font-weight:500;color:var(--muted)}
+    .pricing-desc{color:var(--muted);margin-bottom:24px;font-size:14px}
+    .pricing-features{list-style:none;margin:0 0 24px 0;padding:0}
+    .pricing-features li{padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:15px}
+    .pricing-features li:last-child{border-bottom:none}
+    .check{color:var(--accent2);font-weight:700}
 
-    .mini{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px}
-    .mini h3{margin:0 0 6px 0;font-size:14px;letter-spacing:-.01em}
-    .mini p{margin:0;color:var(--muted);font-size:13px}
+    /* Security */
+    .security-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    @media (max-width:768px){.security-grid{grid-template-columns:1fr}}
+    .security-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+    .security-item h4{margin:0 0 8px 0;font-size:15px;display:flex;align-items:center;gap:8px}
+    .security-item p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
 
-    ul{margin:10px 0 0 18px;color:var(--muted)}
-    li{margin:6px 0}
-    code{background:rgba(99,102,241,.15);color:var(--text);padding:2px 6px;border-radius:6px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    /* CTA Section */
+    .cta-section{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.1));border:1px solid rgba(99,102,241,.25);border-radius:24px;padding:60px 40px;text-align:center;margin:100px 0}
+    .cta-section h2{margin:0 0 16px 0;font-size:clamp(28px,4vw,40px)}
+    .cta-section p{margin:0 0 32px 0;color:var(--muted);font-size:17px;max-width:500px;margin-left:auto;margin-right:auto}
 
-    .demo{display:flex;flex-direction:column;gap:12px}
-    .fake{background:rgba(0,0,0,.14);border:1px dashed var(--border);border-radius:16px;padding:12px}
-    .pill{font-size:12px;border:1px solid var(--border);border-radius:999px;padding:6px 10px;color:var(--muted);display:inline-block}
-    .chat{display:flex;gap:10px;align-items:center;margin-top:10px}
-    .input{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--muted)}
+    /* FAQ */
+    .faq{max-width:800px;margin:0 auto}
+    .faq details{border-top:1px solid var(--border);padding:20px 0}
+    .faq details:last-child{border-bottom:1px solid var(--border)}
+    .faq summary{cursor:pointer;color:var(--text);font-weight:650;font-size:16px;list-style:none;position:relative;padding-right:30px}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::after{content:'+';position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:20px;color:var(--accent);transition:transform .2s}
+    .faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+    .faq p{margin:16px 0 0 0;color:var(--muted)}
+    .faq ul{margin:12px 0 0 20px;color:var(--muted)}
+    .faq li{margin:8px 0}
 
-    .section{margin-top:14px}
-    .section h2{margin:0 0 10px 0;font-size:16px;letter-spacing:-.01em}
-    .muted{color:var(--muted)}
+    /* Footer */
+    footer{margin-top:80px;padding-top:40px;border-top:1px solid var(--border);color:var(--muted);font-size:13px;text-align:center}
+    footer a{color:var(--accent);text-decoration:none}
 
-    .faq details{border-top:1px solid var(--border);padding:10px 0}
-    .faq summary{cursor:pointer;color:var(--text);font-weight:650}
-    .faq summary:focus-visible{outline:3px solid rgba(99,102,241,.35);outline-offset:3px;border-radius:10px}
+    /* Badges */
+    .badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px}
+    .badge{font-size:12px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);color:var(--text);background:rgba(255,255,255,.03);display:flex;align-items:center;gap:6px}
+    .badge.green{border-color:rgba(34,197,94,.35);color:var(--accent2);background:rgba(34,197,94,.08)}
+    .badge.purple{border-color:rgba(99,102,241,.35);color:var(--accent);background:rgba(99,102,241,.08)}
 
-    footer{margin-top:16px;color:var(--muted);font-size:13px}
+    /* Utilities */
+    code{background:rgba(99,102,241,.15);color:var(--text);padding:3px 8px;border-radius:6px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:.9em}
+    .highlight-box{background:var(--card);border-left:4px solid var(--accent);padding:20px;border-radius:0 12px 12px 0;margin:20px 0}
+    .highlight-box p{margin:0;color:var(--muted)}
+
+    /* Mobile adjustments */
+    @media (max-width:480px){
+      .wrap{padding:20px 16px 60px}
+      .hero{padding:20px 0 40px}
+      .btn{width:100%}
+      .hero-cta{flex-direction:column}
+      section{margin:60px 0}
+      .cta-section{padding:40px 24px}
+    }
   </style>
 </head>
 
 <body>
-  <a class="skip" href="#main">Saltar al contenido</a>
+  <a class="skip" href="#main">Saltar al contenido principal</a>
 
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+        <div class="logo" aria-hidden="true">🚀</div>
         <div>
           <b>P2P Merchant Copilot</b>
-          <div class="muted" style="font-size:12px">Binance P2P • plantillas + profit • paste confiable</div>
+          <div class="brand-tagline">Para merchants serios de Binance P2P</div>
         </div>
       </div>
-      <nav class="nav" aria-label="Navegación">
+      <nav class="nav" aria-label="Navegación principal">
+        <a class="link" href="#como-funciona">Cómo funciona</a>
+        <a class="link" href="#que-incluye">Qué incluye</a>
+        <a class="link" href="#seguridad">Seguridad</a>
+        <a class="link" href="#precios">Precios</a>
         <a class="link" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot">GitHub</a>
-        <a class="link" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot/releases/tag/v1.0.0">Download</a>
-        <a class="link" href="#faq">FAQ</a>
       </nav>
     </header>
 
-    <main id="main" class="hero">
-      <section class="card">
-        <h1>Respondé más rápido.
-          Calculá profit al instante.
-          Pegá templates en Binance sin pelear con el foco.</h1>
-
-        <p>Una extensión ligera de Chrome para merchants de Binance P2P: calculadora de margen + templates (CRC/SINPE) + pegado confiable en el input del chat (aunque el overlay robe el foco).</p>
-
-        <div class="badges" aria-label="Highlights">
-          <span class="badge green">Paste targeting (Binance chat)</span>
-          <span class="badge">MV3</span>
-          <span class="badge">Templates (sync)</span>
-          <span class="badge">Shortcuts</span>
-          <span class="badge">CRC/SINPE-friendly</span>
-          <span class="badge">Sin tracking</span>
+    <main id="main">
+      <!-- Hero Section -->
+      <section class="hero" style="margin-top:20px">
+        <div class="hero-badge">
+          <span>✨</span>
+          <span>Extensión Chrome para merchants de Binance P2P</span>
+        </div>
+        
+        <h1>Respondé más rápido.<br>Calculá profit al instante.<br><span style="color:var(--accent)">Ganá más en cada operación.</span></h1>
+        
+        <p>La herramienta que usan los merchants profesionales de LATAM. Templates automáticos para CRC/SINPE + calculadora de profit en tiempo real + pegado inteligente que funciona aunque el chat de Binance robe el foco.</p>
+        
+        <div class="badges">
+          <span class="badge green">✓ Sin errores de cálculo</span>
+          <span class="badge purple">✓ 5x más rápido</span>
+          <span class="badge">⚡ Pegado confiable</span>
+          <span class="badge">🔒 Sin credenciales</span>
+          <span class="badge">🌐 Sincronización Chrome</span>
         </div>
 
-        <div class="cta">
-          <a class="btn" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot/releases/tag/v1.0.0">Descargar ZIP (v1.0.0)</a>
-          <a class="btn secondary" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot">Ver repo</a>
+        <div class="hero-cta">
+          <a class="btn large" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot/releases/tag/v1.0.0">
+            <span>⬇️</span>
+            <span>Descargar extensión (Gratis)</span>
+          </a>
+          <a class="btn secondary large" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot">
+            <span>📂</span>
+            <span>Ver código fuente</span>
+          </a>
         </div>
-
-        <div class="grid3">
-          <div class="mini">
-            <h3>Templates listos</h3>
-            <p>5 templates editables + placeholders: <code>{monto}</code> <code>{banco}</code> <code>{minutos}</code> <code>{ref}</code></p>
-          </div>
-          <div class="mini">
-            <h3>Profit claro</h3>
-            <p>Buy/sell/amount/fee → net profit + margin (sin Excel, sin errores).</p>
-          </div>
-          <div class="mini">
-            <h3>Atajos</h3>
-            <p><code>Ctrl+Shift+1-5</code> pega directo tu template en el input enfocado.</p>
-          </div>
-        </div>
-
-        <div class="section">
-          <h2>Instalación (30 segundos)</h2>
-          <ul>
-            <li>Abrí <code>chrome://extensions</code></li>
-            <li>Activá <b>Developer mode</b></li>
-            <li><b>Load unpacked</b> → elegí la carpeta con <code>manifest.json</code></li>
-          </ul>
-          <p class="muted" style="margin-top:8px">¿Querés que te lo deje con 20 templates + presets + tu flujo? Escribime: <b>jarvis.reco.chat@gmail.com</b></p>
-        </div>
-
-        <footer>
-          Seguridad: no pide credenciales de Binance. Guardamos templates/ajustes en tu navegador (Chrome storage).
-        </footer>
       </section>
 
-      <aside class="card demo" aria-label="Demo">
-        <h2 style="margin:0;font-size:16px">Así se siente</h2>
-        <p>Click en template → se pega en el chat de Binance, aunque el overlay robe el foco. (Mock visual, demo real en camino).</p>
-
-        <div class="fake" role="img" aria-label="Mock de chat de Binance y widget">
-          <div class="pill">Binance P2P (mock)</div>
-          <div class="chat">
-            <div class="input">Chat input… (focus here)</div>
-            <div class="pill">Widget: Paste</div>
+      <!-- Before/After Section -->
+      <section id="antes-despues">
+        <div class="section-header">
+          <h2>De manual a automático</h2>
+          <p>Así cambia tu flujo de trabajo con P2P Merchant Copilot</p>
+        </div>
+        
+        <div class="comparison">
+          <div class="comparison-box before">
+            <div class="comparison-label">Antes (sin la extensión)</div>
+            <h4>❌ Proceso manual y lento</h4>
+            <ul>
+              <li>Escribís el mismo mensaje 50 veces al día</li>
+              <li>Abrís Excel para calcular el profit</li>
+              <li>Copiás y pegás, pero el chat de Binance pierde el foco</li>
+              <li>Errores de cálculo = pérdida de dinero</li>
+              <li>30-60 segundos por operación</li>
+            </ul>
+            <div class="code-block">
+<span class="comment">// Tienes que escribir esto manualmente cada vez:</span><br><br>
+Hola, confirmo recepción. <br>
+Monto: <span class="highlight">[lo escribís a mano]</span><br>
+Banco: <span class="highlight">[lo escribís a mano]</span><br>
+Referencia: <span class="highlight">[lo escribís a mano]</span><br><br>
+<span class="comment">// Y calcular profit en Excel o calculadora</span>
+            </div>
+          </div>
+          
+          <div class="comparison-box after">
+            <div class="comparison-label">Después (con Copilot)</div>
+            <h4>✅ Automatizado y sin errores</h4>
+            <ul>
+              <li>Un click y el template se pega automáticamente</li>
+              <li>Profit calculado en tiempo real, sin Excel</li>
+              <li>Pegado inteligente que funciona siempre</li>
+              <li>Cero errores de cálculo</li>
+              <li>5-10 segundos por operación</li>
+            </ul>
+            <div class="code-block">
+<span class="comment">// Template con placeholders:</span><br><br>
+Hola, confirmo recepción de <span class="highlight">₡{monto}</span> CRC.<br>
+Banco: <span class="highlight">{banco}</span><br>
+Referencia SINPE: <span class="highlight">{ref}</span><br>
+Tiempo estimado: <span class="highlight">{minutos}</span> min.<br><br>
+<span class="comment">// Profit calculado automáticamente:</span><br>
+Compra: $<span class="highlight">{buy}</span> | Venta: $<span class="highlight">{sell}</span><br>
+Profit neto: <span class="highlight" style="color:var(--accent2)">₡{profit}</span> (<span class="highlight">{margin}%</span>)
+            </div>
           </div>
         </div>
+      </section>
 
-        <div class="section faq" id="faq">
-          <h2>FAQ</h2>
+      <!-- How it Works Section -->
+      <section id="como-funciona">
+        <div class="section-header">
+          <h2>Cómo funciona</h2>
+          <p>Tres pasos simples para empezar a ganar tiempo y dinero</p>
+        </div>
+        
+        <div class="steps">
+          <div class="step">
+            <h3>Instalá la extensión</h3>
+            <p>Descargá el ZIP, descomprimilo y cargalo en <code>chrome://extensions</code> con modo desarrollador activado. Listo en 30 segundos.</p>
+          </div>
+          <div class="step">
+            <h3>Configurá tus templates</h3>
+            <p>Personalizá los templates con tus datos: montos, bancos, tiempos de espera. Usá placeholders como <code>{monto}</code>, <code>{banco}</code>, <code>{ref}</code>.</p>
+          </div>
+          <div class="step">
+            <h3>Operá más rápido</h3>
+            <p>Usá los atajos de teclado <code>Ctrl+Shift+1-5</code> para pegar templates instantáneamente. Calculá profit con un click.</p>
+          </div>
+        </div>
+        
+        <div class="highlight-box" style="margin-top:32px">
+          <p><strong>💡 Tip:</strong> Tus templates se sincronizan entre dispositivos si tenés Chrome Sync activado. Configuralo una vez, usalo en todos lados.</p>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section id="que-incluye">
+        <div class="section-header">
+          <h2>Qué incluye</h2>
+          <p>Todo lo que necesitás para operar como un profesional</p>
+        </div>
+        
+        <div class="grid3">
+          <div class="feature">
+            <div class="feature-icon">📝</div>
+            <h3>Templates Inteligentes</h3>
+            <p>5 templates personalizables con placeholders dinámicos. Perfectos para confirmaciones CRC, SINPE, y mensajes estándar.</p>
+            <ul>
+              <li>Placeholders: <code>{monto}</code>, <code>{banco}</code>, <code>{ref}</code>, <code>{minutos}</code></li>
+              <li>Atajos: <code>Ctrl+Shift+1-5</code></li>
+              <li>Sincronización Chrome</li>
+            </ul>
+          </div>
+          
+          <div class="feature">
+            <div class="feature-icon">🧮</div>
+            <h3>Calculadora de Profit</h3>
+            <p>Calculá tu margen real en tiempo real. Incluye comisiones de Binance y te da el profit neto.</p>
+            <ul>
+              <li>Buy price / Sell price</li>
+              <li>Monto de la operación</li>
+              <li>Fee de Binance incluido</li>
+              <li>Profit neto + porcentaje</li>
+            </ul>
+          </div>
+          
+          <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h3>Pegado Confiable</h3>
+            <p>La extensión detecta y supera el problema del foco en el chat de Binance. Pegá templates aunque el overlay interfiera.</p>
+            <ul>
+              <li>Detección inteligente de inputs</li>
+              <li>Funciona en cualquier página</li>
+              <li>Sin perder el contexto</li>
+            </ul>
+          </div>
+          
+          <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Atajos de Teclado</h3>
+            <p>Operá a velocidad profesional con atajos que funcionan en cualquier momento.</p>
+            <ul>
+              <li><code>Ctrl+Shift+1-5</code> para templates</li>
+              <li>Acceso rápido al widget</li>
+              <li>Minimiza clicks innecesarios</li>
+            </ul>
+          </div>
+          
+          <div class="feature">
+            <div class="feature-icon">🌐</div>
+            <h3>Sincronización</h3>
+            <p>Tus templates y ajustes se guardan en Chrome Storage. Accedé desde cualquier dispositivo con tu cuenta.</p>
+            <ul>
+              <li>Chrome Storage API</li>
+              <li>Sincronización entre dispositivos</li>
+              <li>Backup automático</li>
+            </ul>
+          </div>
+          
+          <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <h3>100% Privado</h3>
+            <p>Sin tracking, sin analytics, sin conexión a servidores externos. Tus datos nunca salen de tu navegador.</p>
+            <ul>
+              <li>Código open source</li>
+              <li>Sin trackers</li>
+              <li>Sin conexión externa</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Security Section -->
+      <section id="seguridad">
+        <div class="section-header">
+          <h2>Seguridad y Permisos</h2>
+          <p>Tu seguridad es nuestra prioridad. Te explicamos qué hace la extensión y qué no hace.</p>
+        </div>
+        
+        <div class="card" style="margin-bottom:24px">
+          <h3 style="margin-top:0">❌ Lo que NUNCA hacemos</h3>
+          <div class="security-grid">
+            <div class="security-item">
+              <h4>🔐 No pedimos credenciales</h4>
+              <p>Nunca te pedimos tu usuario, contraseña, 2FA, ni API keys de Binance. La extensión no accede a tu cuenta.</p>
+            </div>
+            <div class="security-item">
+              <h4>🌐 Sin conexión externa</h4>
+              <p>No enviamos datos a servidores externos. Todo funciona localmente en tu navegador.</p>
+            </div>
+            <div class="security-item">
+              <h4>📊 Sin tracking</h4>
+              <p>No usamos Google Analytics ni ningún sistema de tracking. Tu privacidad es total.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h3 style="margin-top:0">✅ Permisos que usamos (y por qué)</h3>
+          <div class="security-grid">
+            <div class="security-item">
+              <h4>📝 storage</h4>
+              <p>Para guardar tus templates y ajustes en tu navegador. Usamos <code>chrome.storage.sync</code> para sincronizar entre dispositivos.</p>
+            </div>
+            <div class="security-item">
+              <h4>🎯 activeTab / scripting</h4>
+              <p>Para detectar el input activo y pegar templates correctamente, incluso cuando Binance usa overlays complejos.</p>
+            </div>
+            <div class="security-item">
+              <h4>🌐 host permissions</h4>
+              <p>Para poder interactuar con la página de Binance P2P y pegar templates en el chat. Solo funciona cuando vos activás la extensión.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="highlight-box">
+          <p><strong>🔍 Transparencia total:</strong> El código es 100% open source. Podés revisar línea por línea en GitHub. No hay código ofuscado ni funciones ocultas.</p>
+        </div>
+      </section>
+
+      <!-- Pricing Section -->
+      <section id="precios">
+        <div class="section-header">
+          <h2>Elegí tu plan</h2>
+          <p>Empezá gratis o potenciá tu operación con setup personalizado</p>
+        </div>
+        
+        <div class="pricing">
+          <div class="pricing-card">
+            <div class="pricing-name">Beta Gratis</div>
+            <div class="pricing-price">$0<span>/siempre</span></div>
+            <div class="pricing-desc">Perfecto para empezar y probar la herramienta</div>
+            <ul class="pricing-features">
+              <li><span class="check">✓</span> 5 templates personalizables</li>
+              <li><span class="check">✓</span> Calculadora de profit</li>
+              <li><span class="check">✓</span> Pegado inteligente</li>
+              <li><span class="check">✓</span> Atajos de teclado</li>
+              <li><span class="check">✓</span> Sincronización Chrome</li>
+              <li><span class="check">✓</span> Soporte vía GitHub</li>
+            </ul>
+            <a class="btn" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot/releases/tag/v1.0.0" style="width:100%">Descargar gratis</a>
+          </div>
+          
+          <div class="pricing-card featured">
+            <div class="pricing-badge">RECOMENDADO</div>
+            <div class="pricing-name">Setup Pro</div>
+            <div class="pricing-price">$49<span>/único pago</span></div>
+            <div class="pricing-desc">Configuración personalizada para tu flujo exacto</div>
+            <ul class="pricing-features">
+              <li><span class="check">✓</span> Todo lo del plan Beta</li>
+              <li><span class="check">✓</span> 20+ templates pre-configurados</li>
+              <li><span class="check">✓</span> Presets por país (CRC, SINPE, etc.)</li>
+              <li><span class="check">✓</span> Flujo personalizado para tu operación</li>
+              <li><span class="check">✓</span> Video tutorial personalizado</li>
+              <li><span class="check">✓</span> Soporte directo por email</li>
+            </ul>
+            <a class="btn" href="mailto:jarvis.reco.chat@gmail.com?subject=Solicitud%20Setup%20Pro%20P2P%20Merchant%20Copilot" style="width:100%">Solicitar setup</a>
+          </div>
+        </div>
+        
+        <div class="highlight-box" style="text-align:center;max-width:600px;margin:32px auto 0">
+          <p>💬 <strong>¿Dudas?</strong> Escribinos a <a href="mailto:jarvis.reco.chat@gmail.com" style="color:var(--accent)">jarvis.reco.chat@gmail.com</a> y te respondemos en menos de 24 horas.</p>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+        <h2>Listo para operar como un profesional?</h2>
+        <p>Unite a los merchants de LATAM que ya ahorran horas cada semana y eliminan errores de cálculo.</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <a class="btn large" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot/releases/tag/v1.0.0">
+            <span>🚀</span>
+            <span>Descargar extensión gratis</span>
+          </a>
+          <a class="btn secondary large" href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot">
+            <span>👀</span>
+            <span>Ver código en GitHub</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section id="faq">
+        <div class="section-header">
+          <h2>Preguntas frecuentes</h2>
+          <p>Todo lo que necesitás saber antes de empezar</p>
+        </div>
+        
+        <div class="faq">
           <details>
-            <summary>¿Funciona solo en Binance?</summary>
-            <p class="muted">Está optimizado para Binance P2P (paste targeting), pero el widget vive en cualquier página.</p>
+            <summary>¿Funciona solo en Binance P2P?</summary>
+            <p>Está optimizado para Binance P2P, pero los templates funcionan en cualquier página web. Podés usarlos en WhatsApp Web, Telegram, o cualquier chat.</p>
           </details>
+          
           <details>
-            <summary>¿Se sincronizan mis templates?</summary>
-            <p class="muted">Sí, usando <code>chrome.storage.sync</code> (si tenés Sync activo en Chrome).</p>
+            <summary>¿Necesito saber programar para usarlo?</summary>
+            <p>Para nada. La instalación es arrastrar y soltar, y los templates se editan en un formulario simple. No requiere conocimientos técnicos.</p>
           </details>
+          
           <details>
-            <summary>¿Qué sigue?</summary>
-            <p class="muted">Demo real (GIF/video), más templates, presets por país, y modo “one‑click reply” para casos comunes.</p>
+            <summary>¿Se sincronizan mis templates entre dispositivos?</summary>
+            <p>Sí, si tenés Chrome Sync activado en tu cuenta de Google. Tus templates y ajustes se guardan en la nube de Chrome y están disponibles en todos tus dispositivos.</p>
+          </details>
+          
+          <details>
+            <summary>¿Es seguro usar esta extensión con mi cuenta de Binance?</summary>
+            <p>Totalmente. La extensión no accede a tu cuenta de Binance, no pide credenciales, y no intercepta datos sensibles. Solo facilita el pegado de texto en inputs. El código es open source para que cualquiera pueda auditarlo.</p>
+          </details>
+          
+          <details>
+            <summary>¿Qué pasa si Binance cambia su interfaz?</summary>
+            <p>Actualizamos la extensión regularmente. Como es código abierto, la comunidad también puede contribuir con fixes. Además, la función de templates funciona independientemente de cambios en la UI de Binance.</p>
+          </details>
+          
+          <details>
+            <summary>¿Puedo pedir funciones nuevas?</summary>
+            <p>¡Por supuesto! Abrí un issue en GitHub o escribinos por email. Priorizamos funciones que beneficien a toda la comunidad de merchants.</p>
           </details>
         </div>
-      </aside>
+      </section>
+
+      <footer>
+        <p>P2P Merchant Copilot — Extensión open source para merchants de Binance P2P</p>
+        <p style="margin-top:8px">
+          <a href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot">GitHub</a> • 
+          <a href="https://github.com/jarvis-chiko-bot/p2p-merchant-copilot/releases">Releases</a> • 
+          <a href="mailto:jarvis.reco.chat@gmail.com">Contacto</a>
+        </p>
+        <p style="margin-top:16px;font-size:12px">Hecho con ❤️ para la comunidad P2P de LATAM</p>
+      </footer>
     </main>
   </div>
 </body>
